@@ -2,6 +2,7 @@ import torch
 from torch.utils.data import DataLoader
 from torchvision import datasets
 from utils.transforms import get_transforms
+from utils.get_data import get_datasets
 from models.model import MyCNN
 from utils.visualize import plot_conf_matrix
 import torch.nn as nn
@@ -9,14 +10,18 @@ import numpy as np
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 transform = get_transforms()
-dataset_path = 'data/PlantVillage'
 
-dataset = datasets.ImageFolder(dataset_path, transform=transform)
-train_set, val_set, test_set = torch.utils.data.random_split(dataset, [int(0.7 * len(dataset)), int(0.2 * len(dataset)), int(0.1 * len(dataset))])
+dataset, train_set, val_set, test_set = get_datasets()
 test_loader = DataLoader(test_set, batch_size=64, shuffle=False)
 
+checkpoint_pth = 'checkpoint_epoc_10.pth'
+checkpoint = torch.load(checkpoint_pth)
+
+
+
 model = MyCNN(num_classes=len(dataset.classes))
-model.load_state_dict(torch.load('checkpoint_epoch_10.pth')['model_state_dict'])
+model.load_state_dict(checkpoint['model_state_dict'])
+model.class_to_idx = checkpoint['class_to_idx']
 model.to(device)
 model.eval()
 
@@ -34,7 +39,7 @@ with torch.no_grad():
         top_p, top_class = torch.exp(output).topk(1, dim=1)
         equals = top_class == labels.view(*top_class.shape)
         
-        test_acc += torch.mean(equals.type(torch.FloatTensor))
+        test_acc += torch.mean(equals.float()).item()
         test_loss += loss.item()
         
         all_predictions.extend(top_class.cpu().numpy())

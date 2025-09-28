@@ -24,6 +24,7 @@ transform = get_transforms()
 dataset_path = 'data/PlantVillage'
 
 dataset = datasets.ImageFolder(dataset_path, transform=transform)
+print(dataset.class_to_idx)
 
 split_file = 'split_indices.pth'
 
@@ -56,9 +57,15 @@ train_set = Subset(dataset, train_indices)
 val_set = Subset(dataset, val_indices)
 test_set = Subset(dataset, test_indices)
 
+# total_size = len(dataset)
+# train_size = int(0.7 * total_size)
+# val_size = int(0.1 * total_size)
+# test_size = total_size - (train_size + val_size)
 
-train_loader = DataLoader(train_set, batch_size=32, shuffle=True)
-val_loader = DataLoader(val_set, batch_size=32, shuffle=False)
+# train_set, val_set, test_set = random_split(dataset, [train_size, val_size, test_size])
+
+train_loader = DataLoader(train_set, batch_size=64, shuffle=True)
+val_loader = DataLoader(val_set, batch_size=64, shuffle=False)
 
 model = MyCNN(num_classes=len(dataset.classes)).to(device)
 model.class_to_idx = dataset.class_to_idx
@@ -97,7 +104,7 @@ for epoch in range(epochs):
             top_p, top_class = torch.exp(output).topk(1, dim=1)
             equals = top_class == labels.view(*top_class.shape)
             
-            val_acc += torch.mean(equals.type(torch.FloatTensor))
+            val_acc += torch.mean(equals.float()).item()
             val_loss += loss.item()
 
     print(f"Epoch {epoch+1}/{epochs} - Train loss: {train_loss / len(train_loader):.3f}, "

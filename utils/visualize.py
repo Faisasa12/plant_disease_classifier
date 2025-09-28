@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
-from transforms import get_mean, get_std
+from utils.transforms import get_mean, get_std
 
 def imshow(image, ax=None, title=None):
     if ax is None:
