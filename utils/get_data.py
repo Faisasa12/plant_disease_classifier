@@ -16,7 +16,6 @@ def get_datasets():
     dataset_path = 'data/PlantVillage'
 
     dataset = datasets.ImageFolder(dataset_path, transform=transform)
-    print(dataset.class_to_idx)
 
     split_file = 'split_indices.pth'
 
