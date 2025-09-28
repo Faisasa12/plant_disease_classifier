@@ -49,4 +49,4 @@ def get_datasets():
     val_set = Subset(dataset, val_indices)
     test_set = Subset(dataset, test_indices)
     
-    return train_set, val_set, test_set
+    return dataset, train_set, val_set, test_set
