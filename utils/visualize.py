@@ -18,8 +18,14 @@ def imshow(image, ax=None, title=None):
 
     return ax
 
-def plot_conf_matrix(preds, labels, classes):
+def plot_conf_matrix(preds, labels, classes, fontsize = 10):
     cm = confusion_matrix(labels, preds)
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=classes)
-    disp.plot(xticks_rotation=45)
+    fig, ax = plt.subplots(figsize=(10,10))
+    
+    disp.plot(ax=ax, xticks_rotation=90)
+    
+    ax.tick_params(axis='both', labelsize= fontsize)
+    
+    plt.subplots_adjust(bottom=0.4)
     plt.show()

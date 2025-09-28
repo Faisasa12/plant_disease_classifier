@@ -46,4 +46,4 @@ with torch.no_grad():
         all_labels.extend(labels.cpu().numpy())
 
 print(f"Test Loss: {test_loss / len(test_loader):.3f}, Test Accuracy: {test_acc / len(test_loader):.3f}")
-plot_conf_matrix(all_predictions, all_labels, dataset.classes)
+plot_conf_matrix(all_predictions, all_labels, dataset.classes, fontsize=7)
