@@ -12,10 +12,9 @@ random.seed(SEED)
 np.random.seed(SEED)
 
 def get_datasets():
-    transform = get_transforms()
     dataset_path = 'data/PlantVillage'
 
-    dataset = datasets.ImageFolder(dataset_path, transform=transform)
+    dataset = datasets.ImageFolder(dataset_path, transform= get_transforms(False))
 
     split_file = 'split_indices.pth'
 
@@ -44,7 +43,7 @@ def get_datasets():
             'test': test_indices
         }, split_file)
 
-    train_set = Subset(dataset, train_indices)
+    train_set = Subset(datasets.ImageFolder(dataset_path, transform=get_transforms(True)), train_indices)
     val_set = Subset(dataset, val_indices)
     test_set = Subset(dataset, test_indices)
     

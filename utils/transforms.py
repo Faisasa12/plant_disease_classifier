@@ -7,11 +7,22 @@ def get_mean():
 def get_std():
     return [0.229, 0.224, 0.225]
     
-def get_transforms():
-    return transforms.Compose([
-        transforms.Resize((255, 255)),
-        transforms.CenterCrop((224, 224)),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=get_mean(),
-                             std=get_std())
-    ])
+def get_transforms(train=False):
+    
+    if train:
+        return transforms.Compose([
+            transforms.RandomResizedCrop(224),
+            transforms.RandomHorizontalFlip(),
+            transforms.RandomRotation(15),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=get_mean(), std=get_std())
+        ])
+    
+    else:
+        return transforms.Compose([
+            transforms.Resize((255, 255)),
+            transforms.CenterCrop((224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=get_mean(),
+                                std=get_std())
+        ])
