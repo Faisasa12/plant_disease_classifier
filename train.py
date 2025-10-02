@@ -10,6 +10,7 @@ import csv
 
 from models.model import MyCNN
 from utils.transforms import get_transforms
+from utils.get_data import get_datasets
 
 SEED = 42
 torch.manual_seed(SEED)
@@ -20,50 +21,8 @@ np.random.seed(SEED)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
 
-transform = get_transforms()
-dataset_path = 'data/PlantVillage'
 
-dataset = datasets.ImageFolder(dataset_path, transform=transform)
-print(dataset.class_to_idx)
-
-split_file = 'split_indices.pth'
-
-if os.path.exists(split_file):
-    split = torch.load(split_file)
-    
-    train_indices = split['train']
-    val_indices = split['val']
-    test_indices = split['test']
-    
-else:
-    indices = list(range(len(dataset)))
-    random.shuffle(indices)
-    
-
-    train_size = int(0.7 * len(dataset))
-    val_size = int(0.2 * len(dataset))
-    
-    train_indices = indices[: train_size]
-    val_indices = indices[train_size : train_size + val_size]
-    test_indices = indices[train_size + val_size: ]
-    
-    torch.save({
-        'train': train_indices,
-        'val': val_indices,
-        'test': test_indices
-    }, split_file)
-
-train_set = Subset(dataset, train_indices)
-val_set = Subset(dataset, val_indices)
-test_set = Subset(dataset, test_indices)
-
-# total_size = len(dataset)
-# train_size = int(0.7 * total_size)
-# val_size = int(0.1 * total_size)
-# test_size = total_size - (train_size + val_size)
-
-# train_set, val_set, test_set = random_split(dataset, [train_size, val_size, test_size])
-
+dataset, train_set, val_set, test_set = get_datasets()
 train_loader = DataLoader(train_set, batch_size=64, shuffle=True)
 val_loader = DataLoader(val_set, batch_size=64, shuffle=False)
 
