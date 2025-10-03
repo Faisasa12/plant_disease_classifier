@@ -11,7 +11,7 @@ import csv
 from models.model import MyCNN
 from utils.transforms import get_transforms
 from utils.get_data import get_datasets
-
+from utils.visualize import plot_training_curves
 SEED = 42
 torch.manual_seed(SEED)
 random.seed(SEED)
@@ -86,3 +86,5 @@ for epoch in range(epochs):
             val_loss / len(val_loader),
             val_acc / len(val_loader)
         ])
+        
+plot_training_curves('train_log.csv')
