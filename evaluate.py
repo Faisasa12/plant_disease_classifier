@@ -7,6 +7,7 @@ from models.model import MyCNN
 from utils.visualize import plot_conf_matrix
 import torch.nn as nn
 import numpy as np
+from sklearn.metrics import classification_report
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 transform = get_transforms()
@@ -46,4 +47,7 @@ with torch.no_grad():
         all_labels.extend(labels.cpu().numpy())
 
 print(f"Test Loss: {test_loss / len(test_loader):.3f}, Test Accuracy: {test_acc / len(test_loader):.3f}")
+print('The Classification report: ')
+print(classification_report(all_labels, all_predictions, target_names= dataset.classes))
+
 plot_conf_matrix(all_predictions, all_labels, dataset.classes, fontsize=7)
