@@ -3,7 +3,8 @@ import numpy as np
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from utils.transforms import get_mean, get_std
 import pandas as pd
-
+from torchvision.transforms import ToPILImage
+from torchcam.utils import overlay_mask
 
 def imshow(image, ax=None, title=None):
     if ax is None:
@@ -47,4 +48,16 @@ def plot_training_curves(csv_file= 'train_log.csv'):
     ax[1].legend()
     ax[1].set_title("Accuracy Curve")
 
+    plt.show()
+    
+def show_grad_cam(input_tensor, activation_map, top_class):
+    to_pil = ToPILImage()
+    input_image = to_pil(input_tensor.squeeze(0))
+
+
+    result = overlay_mask(input_image, to_pil(activation_map[0].squeeze(0)), alpha=0.5)
+
+    plt.imshow(result)
+    plt.title(f"Grad-CAM - Predicted Class: {top_class}")
+    plt.axis('off')
     plt.show()
