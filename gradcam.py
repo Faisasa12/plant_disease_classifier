@@ -12,6 +12,9 @@ from utils.visualize import show_grad_cam
 model = MyCNN(num_classes=15)
 checkpoint = torch.load("checkpoint_epoch_10.pth")
 model.load_state_dict(checkpoint['model_state_dict'])
+model.class_to_idx = checkpoint['class_to_idx']
+idx_to_class = {idx: class_name for class_name, idx in model.class_to_idx.items()}
+
 model.eval()
 
 target_layer = model.conv_block4[-2]  # ReLU layer
@@ -31,5 +34,6 @@ top_p, top_class = output.topk(1, dim=1)
 top_class = top_class.item()
 
 activation_map = cam_extractor(top_class, output)
+top_class = idx_to_class[top_class]
 
 show_grad_cam(input_tensor=input_tensor, activation_map=activation_map, top_class=top_class)
