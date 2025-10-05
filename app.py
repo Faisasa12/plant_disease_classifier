@@ -29,7 +29,10 @@ uploaded_file = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
 
 if uploaded_file:
     image = Image.open(uploaded_file).convert("RGB")
-    st.image(image, caption="Uploaded Image", use_container_width=True)
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.image(image, caption="Uploaded Image", use_container_width=True)
 
     input_tensor = transform(image)
     confidence, class_idx, predicted_class = predict(model, input_tensor, idx_to_class)
@@ -42,5 +45,5 @@ if uploaded_file:
     st.markdown(f"**Confidence:** {confidence*100:.2f}%")
 
     
-
-    st.image(heatmap_image, caption="Grad-CAM Heatmap", use_container_width=True)
+    with col2:
+        st.image(heatmap_image, caption="Grad-CAM Heatmap", use_container_width=True)
