@@ -58,18 +58,25 @@ def plot_training_curves(csv_file= 'train_log.csv'):
     plt.show()
     
 def show_grad_cam(input_tensor, activation_map, top_class):
-    to_pil = ToPILImage()
-    input_image = to_pil(denormalize(input_tensor.squeeze(0).numpy().transpose((1,2,0))))
-
-    result = overlay_mask(input_image, to_pil(activation_map[0].squeeze(0)), alpha=0.5)
+    input_image, result = get_grad_cam_image(input_tensor, activation_map)
 
     fig, axes = plt.subplots(1, 2, figsize=(10, 5))
 
-    imshow(input_tensor.squeeze(0), ax=axes[0], title='Original Image')
-
+    axes[0].imshow(input_image)
+    axes[0].set_title('Original Image')
+    axes[0].axis('off')
+    
     axes[1].imshow(result)
-    axes[1].set_title(f"Grad-CAM - Predicted Class: {top_class}")
+    axes[1].set_title(f'Grad-CAM - Predicted Class: {top_class}')
     axes[1].axis('off')
 
     plt.tight_layout()
     plt.show()
+    
+def get_grad_cam_image(input_tensor, activation_map):
+    to_pil = ToPILImage()
+    input_image = to_pil(denormalize(input_tensor.squeeze(0).numpy().transpose((1,2,0))))
+
+    result = overlay_mask(input_image, to_pil(activation_map[0].squeeze(0)), alpha=0.5)
+    
+    return input_image, result
