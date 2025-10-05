@@ -16,7 +16,7 @@ transform = get_transforms()
 dataset, train_set, val_set, test_set = get_datasets()
 test_loader = DataLoader(test_set, batch_size=64, shuffle=False)
 
-checkpoint_pth = 'checkpoint_epoch_10.pth'
+checkpoint_pth = 'model.pth'
 
 
 model, idx_to_class = load_model(checkpoint_pth)

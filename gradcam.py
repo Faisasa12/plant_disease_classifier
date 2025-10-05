@@ -18,7 +18,7 @@ args = parser.parse_args()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-model, idx_to_class = load_model("checkpoint_epoch_10.pth")
+model, idx_to_class = load_model("model.pth")
 
 model.to(device).eval()
 

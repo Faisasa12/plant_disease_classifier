@@ -1,7 +1,7 @@
 from models.model import MyCNN
 import torch
 
-def load_model(pth= "checkpoint_epoch_10.pth"):
+def load_model(pth= "model.pth"):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     model = MyCNN(num_classes=15)
