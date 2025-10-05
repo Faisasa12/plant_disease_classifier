@@ -88,9 +88,16 @@ python gradcam.py image/path.jpg
 - shows the original image
 - shows the image overlayed with gradcam and the predicted class
 
+## Streamlit app
+```bash
+streamlit run app.py
+```
+
+- Opens a local streamlit webpage to test the model
+- You can upload images or choose some of the given examples
+- Shows the gradcam of the image
 
 ## Coming soon
-- Streamlit web app for deployment
 - A demo video
 
 
