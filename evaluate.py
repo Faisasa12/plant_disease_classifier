@@ -3,6 +3,7 @@ from torch.utils.data import DataLoader
 from torchvision import datasets
 from utils.transforms import get_transforms
 from utils.get_data import get_datasets
+from utils.load_model import load_model
 from models.model import MyCNN
 from utils.visualize import plot_conf_matrix
 import torch.nn as nn
@@ -16,13 +17,9 @@ dataset, train_set, val_set, test_set = get_datasets()
 test_loader = DataLoader(test_set, batch_size=64, shuffle=False)
 
 checkpoint_pth = 'checkpoint_epoch_10.pth'
-checkpoint = torch.load(checkpoint_pth)
 
 
-
-model = MyCNN(num_classes=len(dataset.classes))
-model.load_state_dict(checkpoint['model_state_dict'])
-model.class_to_idx = checkpoint['class_to_idx']
+model, idx_to_class = load_model(checkpoint_pth)
 model.to(device)
 model.eval()
 

@@ -9,6 +9,7 @@ import argparse
 from models.model import MyCNN
 from utils.transforms import get_transforms
 from utils.visualize import show_grad_cam
+from utils.load_model import load_model
 
 parser = argparse.ArgumentParser(description="Run Grad-CAM on an input image")
 parser.add_argument("image_path", type=str, help="Path to the input image")
@@ -16,11 +17,8 @@ args = parser.parse_args()
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-model = MyCNN(num_classes=15)
-checkpoint = torch.load("checkpoint_epoch_10.pth")
-model.load_state_dict(checkpoint['model_state_dict'])
-model.class_to_idx = checkpoint['class_to_idx']
-idx_to_class = {idx: class_name for class_name, idx in model.class_to_idx.items()}
+
+model, idx_to_class = load_model("checkpoint_epoch_10.pth")
 
 model.to(device).eval()
 
