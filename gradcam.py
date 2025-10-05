@@ -4,12 +4,18 @@ from PIL import Image
 import matplotlib.pyplot as plt
 from torchcam.methods import GradCAM
 from torchcam.utils import overlay_mask
+import argparse
 
 from models.model import MyCNN
 from utils.transforms import get_transforms
 from utils.visualize import show_grad_cam
 
+parser = argparse.ArgumentParser(description="Run Grad-CAM on an input image")
+parser.add_argument("image_path", type=str, help="Path to the input image")
+args = parser.parse_args()
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 model = MyCNN(num_classes=15)
 checkpoint = torch.load("checkpoint_epoch_10.pth")
 model.load_state_dict(checkpoint['model_state_dict'])
@@ -23,7 +29,7 @@ target_layer = model.conv_block4[-2]  # ReLU layer
 cam_extractor = GradCAM(model, target_layer=target_layer)
 
 
-image_path = r"data\PlantVillage\Pepper__bell___Bacterial_spot\0a0dbf1f-1131-496f-b337-169ec6693e6f___NREC_B.Spot 9241.JPG"
+image_path = args.image_path
 transform = get_transforms(train=False)
 image = Image.open(image_path).convert("RGB")
 input_tensor = transform(image).unsqueeze(0).to(device)

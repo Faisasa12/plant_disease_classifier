@@ -76,9 +76,20 @@ python evaluate.py
 - Prints the classification report
 - Shows the confusion matrix
 
+### 4. Show what the model sees (gradcam)
+```bash
+python gradcam.py image/path.jpg
+```
+
+- **Warning** make sure that your path has no escape characters
+- **Warning** if your path has spaces, wrap it in quotes
+- Loads the model saved in **checkpoint_epoch_10.pth**
+- Predicts the image given as an argument
+- shows the original image
+- shows the image overlayed with gradcam and the predicted class
+
 
 ## Coming soon
-- Grad-CAM to boost interpretability
 - Streamlit web app for deployment
 - A demo video
 
