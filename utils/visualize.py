@@ -6,15 +6,20 @@ import pandas as pd
 from torchvision.transforms import ToPILImage
 from torchcam.utils import overlay_mask
 
+
+def denormalize(tensor):
+    mean = np.array(get_mean())
+    std = np.array(get_std())
+    
+    return (tensor * std) + mean
+
 def imshow(image, ax=None, title=None):
     if ax is None:
         fig, ax = plt.subplots()
 
     image = image.numpy().transpose((1, 2, 0))
-    mean = np.array(get_mean())
-    std = np.array(get_std())
     
-    image = std * image + mean
+    image = denormalize(image)
     image = np.clip(image, 0, 1)
 
     ax.imshow(image)
@@ -54,7 +59,7 @@ def plot_training_curves(csv_file= 'train_log.csv'):
     
 def show_grad_cam(input_tensor, activation_map, top_class):
     to_pil = ToPILImage()
-    input_image = to_pil(input_tensor.squeeze(0))
+    input_image = to_pil(denormalize(input_tensor.squeeze(0).numpy().transpose((1,2,0))))
 
     result = overlay_mask(input_image, to_pil(activation_map[0].squeeze(0)), alpha=0.5)
 
