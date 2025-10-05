@@ -11,8 +11,11 @@ from utils.load_model import load_model
 from torchcam.methods import GradCAM
 
 
+@st.cache_resource
+def get_model():
+    return load_model()
 
-model, idx_to_class = load_model()
+model, idx_to_class = get_model()
 target_layer = model.conv_block4[-2]
 cam_extractor = GradCAM(model, target_layer=target_layer)
 transform = get_transforms(train=False)
