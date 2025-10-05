@@ -18,6 +18,8 @@ def imshow(image, ax=None, title=None):
     image = np.clip(image, 0, 1)
 
     ax.imshow(image)
+    ax.axis('off')
+    ax.set_title(title)
 
     return ax
 
@@ -54,10 +56,15 @@ def show_grad_cam(input_tensor, activation_map, top_class):
     to_pil = ToPILImage()
     input_image = to_pil(input_tensor.squeeze(0))
 
-
     result = overlay_mask(input_image, to_pil(activation_map[0].squeeze(0)), alpha=0.5)
 
-    plt.imshow(result)
-    plt.title(f"Grad-CAM - Predicted Class: {top_class}")
-    plt.axis('off')
+    fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+
+    imshow(input_tensor.squeeze(0), ax=axes[0], title='Original Image')
+
+    axes[1].imshow(result)
+    axes[1].set_title(f"Grad-CAM - Predicted Class: {top_class}")
+    axes[1].axis('off')
+
+    plt.tight_layout()
     plt.show()
