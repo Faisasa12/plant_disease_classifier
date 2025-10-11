@@ -38,10 +38,17 @@ example_images = {
 }
 
 example_choice = st.selectbox("Or choose an example image", ["None"] + list(example_images.keys()))
-is_example = False
 
-if example_choice != "None":
-    is_example = True
+if 'last_action' not in st.session_state:
+    st.session_state.last_action = None
+    
+if 'choice' not in st.session_state:
+    st.session_state.choice = None
+
+if example_choice != "None" and example_choice != st.session_state.choice:
+    st.session_state.last_action = 'example'
+    st.session_state.choice = example_choice
+    
     example_path = os.path.join(EXAMPLE_IMAGE_DIR, example_images[example_choice])
     
     example_image = Image.open(example_path).convert("RGB")
@@ -53,18 +60,20 @@ else:
     
 uploaded_file = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
 
-if uploaded_file:
+if uploaded_file and st.session_state.last_action != 'example':
     input_image = Image.open(uploaded_file).convert("RGB")
-    is_example = False    
+    st.session_state.last_action = 'upload'   
 
 
 if input_image:
     with col1:
-        if is_example:
+        if st.session_state.last_action == 'example':
             st.image(example_image, caption=f"Example: {example_choice}", use_container_width=True)
             
-        else:
+        elif st.session_state.last_action == 'upload':
             st.image(input_image, caption="Uploaded Image", use_container_width=True)
+            
+        st.session_state.last_action = None
         
     input_tensor = transform(input_image)
     confidence, class_idx, predicted_class = predict(model, input_tensor, idx_to_class)
