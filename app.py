@@ -17,7 +17,7 @@ def get_model():
     return load_model()
 
 model, idx_to_class = get_model()
-target_layer = model.conv_block4[-2]
+target_layer = model.conv_block4[-2] # ReLu layer
 cam_extractor = GradCAM(model, target_layer=target_layer)
 transform = get_transforms(train=False)
 
@@ -38,14 +38,13 @@ example_images = {
 }
 
 example_choice = st.selectbox("Or choose an example image", ["None"] + list(example_images.keys()))
+is_example = False
 
 if example_choice != "None":
+    is_example = True
     example_path = os.path.join(EXAMPLE_IMAGE_DIR, example_images[example_choice])
     
     example_image = Image.open(example_path).convert("RGB")
-    
-    with col1:
-        st.image(example_image, caption=f"Example: {example_choice}", use_container_width=True)
 
     input_image = example_image
 else:
@@ -56,12 +55,17 @@ uploaded_file = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
 
 if uploaded_file:
     input_image = Image.open(uploaded_file).convert("RGB")
-    
-    with col1:
-        st.image(input_image, caption="Uploaded Image", use_container_width=True)
+    is_example = False    
 
 
 if input_image:
+    with col1:
+        if is_example:
+            st.image(example_image, caption=f"Example: {example_choice}", use_container_width=True)
+            
+        else:
+            st.image(input_image, caption="Uploaded Image", use_container_width=True)
+        
     input_tensor = transform(input_image)
     confidence, class_idx, predicted_class = predict(model, input_tensor, idx_to_class)
     
