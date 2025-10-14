@@ -5,7 +5,7 @@ from utils.transforms import get_transforms
 from utils.get_data import get_datasets
 from utils.load_model import load_model
 from models.model import MyCNN
-from utils.visualize import plot_conf_matrix
+from utils.visualize import plot_conf_matrix, plot_conf_matrix_no_diag
 import torch.nn as nn
 import numpy as np
 from sklearn.metrics import classification_report
@@ -48,3 +48,4 @@ print('The Classification report: ')
 print(classification_report(all_labels, all_predictions, target_names= dataset.classes))
 
 plot_conf_matrix(all_predictions, all_labels, dataset.classes, fontsize=7)
+plot_conf_matrix_no_diag(all_predictions, all_labels, dataset.classes, fontsize=7)

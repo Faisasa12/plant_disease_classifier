@@ -40,6 +40,19 @@ def plot_conf_matrix(preds, labels, classes, fontsize = 10):
     plt.subplots_adjust(bottom=0.4)
     plt.show()
 
+def plot_conf_matrix_no_diag(preds, labels, classes, fontsize = 10):
+    cm = confusion_matrix(labels, preds)
+    np.fill_diagonal(cm, 0)
+    
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=classes)
+    fig, ax = plt.subplots(figsize=(10,10))
+    
+    disp.plot(ax=ax, xticks_rotation=90)
+    
+    ax.tick_params(axis='both', labelsize= fontsize)
+    
+    plt.subplots_adjust(bottom=0.4)
+    plt.show()
 
 def plot_training_curves(csv_file= 'train_log.csv'):
     df = pd.read_csv(csv_file)
