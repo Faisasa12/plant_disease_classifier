@@ -81,7 +81,7 @@ python train.py
 python evaluate.py
 ```
 
-- Loads the model saved in **checkpoint_epoch_10.pth**
+- Loads the model saved in **model.pth**
 - Evaluates on test set
 - Prints the classification report
 - Shows the confusion matrix
@@ -93,7 +93,7 @@ python gradcam.py image/path.jpg
 
 - **Warning** make sure that your path has no escape characters
 - **Warning** if your path has spaces, wrap it in quotes
-- Loads the model saved in **checkpoint_epoch_10.pth**
+- Loads the model saved in **model.pth**
 - Predicts the image given as an argument
 - shows the original image
 - shows the image overlayed with gradcam and the predicted class
@@ -103,6 +103,7 @@ python gradcam.py image/path.jpg
 streamlit run app.py
 ```
 
+- Loads the model saved in **model.pth**
 - Opens a local streamlit webpage to test the model
 - You can upload images or choose some of the given examples
 - Shows the gradcam of the image
