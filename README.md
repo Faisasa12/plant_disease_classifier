@@ -1,7 +1,7 @@
 # Plant Disease Classifier (CNN-based)
 
 A deep learning project for detecting **15 plant diseases** using leaf images from the [PlantVillage dataset](https://www.kaggle.com/datasets/emmarex/plantdisease).  
-The project includes model training, evaluation (with detailed metrics), and will soon support interpretability via **Grad-CAM** and a **Streamlit web app**.
+The project includes model training, evaluation (with detailed metrics), and supports interpretability via **Grad-CAM** and deployed through a **Streamlit web app**.
 
 ---
 
@@ -22,7 +22,8 @@ The project includes model training, evaluation (with detailed metrics), and wil
   - Classification report (precision, recall, F1)
   - Confusion matrix
   - Accuracy and loss curves
-- Deploy a user-friendly web app with Streamlit *(coming soon)*
+- Show Grad-CAM to enhance model interpretability
+- Deploy a user-friendly web app with Streamlit
 
 ---
 
@@ -31,7 +32,7 @@ The project includes model training, evaluation (with detailed metrics), and wil
 - **Source**: [PlantVillage (Kaggle)](https://www.kaggle.com/datasets/emmarex/plantdisease)
 - **Classes**: 15 diseases across Tomato, Potato, Pepper
 - **Splits**: 70% train, 20% val, 10% test  
-- Images are resized and normalized using standard ImageNet stats.
+- Images are resized and normalized using standard ImageNet stats
 
 ---
 
