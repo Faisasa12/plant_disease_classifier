@@ -5,6 +5,16 @@ The project includes model training, evaluation (with detailed metrics), and wil
 
 ---
 
+# Videos
+
+## Project Summary Presentation
+[![Watch the presentation](https://img.youtube.com/vi/Ch5FM4qqQLY/0.jpg)](https://www.youtube.com/watch?v=Ch5FM4qqQLY)
+
+## Project Demo Video
+[![Watch the demo](https://img.youtube.com/vi/5ZNbU5qKuSk/0.jpg)](https://www.youtube.com/watch?v=5ZNbU5qKuSk)
+
+---
+
 ## Project Goals
 
 - Train a custom Convolutional Neural Network (CNN) on the PlantVillage dataset
@@ -97,8 +107,6 @@ streamlit run app.py
 - You can upload images or choose some of the given examples
 - Shows the gradcam of the image
 
-## Coming soon
-- A demo video
 
 
 ## Author
